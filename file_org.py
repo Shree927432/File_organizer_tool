@@ -3,34 +3,28 @@ from pathlib import Path
 
 folder = Path.home() / "Desktop" / "test_folder"
 
+def make_directory(destination):
+    destination.mkdir(parents=True, exist_ok=True)
 
+def move_files(item, destination):
+    shutil.move(str(item), str(destination / item.name))
 
 for item in folder.iterdir():
     if item.is_file():
-        if item.suffix.lower() in [".pdf"]:
-            pdf_folder = folder / "PDFs"
-            pdf_folder.mkdir(exist_ok= True)
-            shutil.move(str(item),str(pdf_folder/item.name))
-        
-        elif item.suffix.lower() in ['.jpg',".jpeg"]:
-            img_folder = folder / "Images"
-            img_folder.mkdir(exist_ok = True)
-            shutil.move(str(item),str(img_folder/item.name))
+        ext = item.suffix.lower()
 
-        elif item.suffix.lower() in [".mp4",".mov"] :
-            video_folder = folder / "Videos"
-            video_folder.mkdir(exist_ok=True)
-            shutil.move(str(item),str(video_folder/item.name))
-
-        elif item.suffix.lower() in [".docx",".docs"]:
-            doc_folder = folder / "Documents"
-            doc_folder.mkdir(exist_ok=True)
-            shutil.move(str(item),str(doc_folder/item.name))
-
+        if ext == ".pdf":
+            destination = folder / "PDFs"
+        elif ext in [".jpg", ".jpeg"]:
+            destination = folder / "Images"
+        elif ext in [".mp4", ".mov"]:
+            destination = folder / "Videos"
+        elif ext in [".docx", ".docs"]:
+            destination = folder / "Documents"
         else:
-            other_folder = folder / "Other"
-            other_folder.mkdir(exist_ok=True)
-            shutil.move(str(item),str(other_folder/item.name))
+            destination = folder / "Others"
 
+        make_directory(destination)
+        move_files(item, destination)
 
 print("All files are moved successfully")
