@@ -1,7 +1,12 @@
 import shutil
 from pathlib import Path
+from tkinter import Tk, filedialog
 
-folder = Path.home() / "Desktop" / "test_folder"
+Tk().withdraw()
+
+folder_path = filedialog.askdirectory()
+folder = Path(folder_path)
+
 
 def make_directory(destination):
     destination.mkdir(parents=True, exist_ok=True)
@@ -15,11 +20,11 @@ for item in folder.iterdir():
 
         if ext == ".pdf":
             destination = folder / "PDFs"
-        elif ext in [".jpg", ".jpeg"]:
+        elif ext in [".jpg", ".jpeg",".png"]:
             destination = folder / "Images"
         elif ext in [".mp4", ".mov"]:
             destination = folder / "Videos"
-        elif ext in [".docx", ".docs"]:
+        elif ext in [".docx", ".docs",".csv"]:
             destination = folder / "Documents"
         else:
             destination = folder / "Others"
